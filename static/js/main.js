@@ -392,51 +392,103 @@ function displayFeatureResult(feature, result) {
     // Show the result card
     resultCard.style.display = 'block';
 
-    // Special handling for age with enhanced information
-    if (feature === 'age' && result.category) {
-        // Update value with emoji and category
+    // Enhanced handling for age with new structure
+    if (feature === 'age') {
         if (valueElement) {
-            valueElement.innerHTML = `${result.category_emoji} ${result.value} years<br><small>${result.category}</small>`;
+            // Use category_emoji if available, otherwise use display
+            const emoji = result.category_emoji || '';
+            const category = result.category || result.group || '';
+            const ageValue = result.value || 0;
+
+            valueElement.innerHTML = `
+                <div class="age-main">${emoji} ${ageValue} years</div>
+                <div class="age-category">${category}</div>
+            `;
         }
 
-        // Update extra information with detailed age info
+        // Enhanced extra information for age
         if (extraElement) {
+            const detailedInfo = result.detailed_info || {};
+            const stability = detailedInfo.prediction_stability || 1;
+            const lifeStage = detailedInfo.life_stage || '';
+
             extraElement.innerHTML = `
                 <div class="age-details">
-                    <div class="age-range">Range: ${result.range}</div>
-                    <div class="age-stage">Life Stage: ${result.detailed_info.life_stage}</div>
+                    <div class="age-range">
+                        <i class="fas fa-chart-line"></i> Range: ${result.range || 'N/A'}
+                    </div>
+                    ${lifeStage ? `<div class="age-stage">
+                        <i class="fas fa-user-clock"></i> ${lifeStage}
+                    </div>` : ''}
+                    <div class="age-stability">
+                        <i class="fas fa-check-circle"></i>
+                        Stability: ${stability > 1 ? 'High' : 'Standard'}
+                        ${stability > 1 ? `(${stability} predictions)` : ''}
+                    </div>
                 </div>
             `;
         }
     } else {
         // Standard handling for other features
         if (valueElement) {
-            valueElement.textContent = result.display || result.value;
+            valueElement.innerHTML = result.display || result.value || 'Unknown';
         }
 
-        // Update extra information
-        if (extraElement && result.range) {
-            extraElement.textContent = `Range: ${result.range}`;
+        // Update extra information for other features
+        if (extraElement) {
+            if (result.all_scores) {
+                // Show top 3 scores for emotions, gender, race
+                const scores = Object.entries(result.all_scores)
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, 3);
+
+                extraElement.innerHTML = `
+                    <div class="feature-scores">
+                        ${scores.map(([key, value]) =>
+                            `<div class="score-item">
+                                <span class="score-label">${key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                                <span class="score-value">${value}%</span>
+                            </div>`
+                        ).join('')}
+                    </div>
+                `;
+            } else if (result.range) {
+                extraElement.innerHTML = `<div class="feature-range">Range: ${result.range}</div>`;
+            }
         }
     }
 
-    // Update confidence
-    if (result.confidence && confidenceElement) {
-        confidenceElement.textContent = `${result.confidence}%`;
+    // Update confidence with enhanced styling
+    if (result.confidence !== undefined && confidenceElement) {
+        const confidence = Math.round(result.confidence);
+        confidenceElement.textContent = `${confidence}%`;
 
-        // Animate confidence bar
+        // Add confidence level indicator
+        let confidenceClass = 'confidence-low';
+        if (confidence >= 85) confidenceClass = 'confidence-high';
+        else if (confidence >= 70) confidenceClass = 'confidence-medium';
+
+        confidenceElement.className = `confidence-text ${confidenceClass}`;
+
+        // Animate confidence bar with color coding
         if (confidenceBar) {
             setTimeout(() => {
-                confidenceBar.style.width = `${result.confidence}%`;
+                confidenceBar.style.width = `${confidence}%`;
+                confidenceBar.className = `confidence-fill ${confidenceClass}`;
             }, 100);
         }
     }
 
-    // Add animation
+    // Enhanced animation with stagger effect
     resultCard.style.animation = 'none';
+    resultCard.style.opacity = '0';
+    resultCard.style.transform = 'translateY(20px)';
+
     setTimeout(() => {
-        resultCard.style.animation = 'slideInUp 0.5s ease';
-    }, 10);
+        resultCard.style.animation = 'slideInUp 0.6s ease-out forwards';
+        resultCard.style.opacity = '1';
+        resultCard.style.transform = 'translateY(0)';
+    }, 50);
 }
 
 function resetResults() {

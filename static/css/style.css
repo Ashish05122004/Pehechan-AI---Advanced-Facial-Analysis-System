@@ -851,6 +851,117 @@ body {
     margin-top: 2px;
 }
 
+.age-main {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.age-category {
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.age-stability {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 4px;
+}
+
+/* Enhanced confidence levels */
+.confidence-high {
+    color: #4ade80 !important;
+}
+
+.confidence-medium {
+    color: #fbbf24 !important;
+}
+
+.confidence-low {
+    color: #f87171 !important;
+}
+
+.confidence-fill.confidence-high {
+    background: linear-gradient(90deg, #10b981, #4ade80);
+}
+
+.confidence-fill.confidence-medium {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.confidence-fill.confidence-low {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+/* Feature scores display */
+.feature-scores {
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+}
+
+.score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3px 0;
+    font-size: 0.75rem;
+}
+
+.score-label {
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: capitalize;
+}
+
+.score-value {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.feature-range {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 4px;
+}
+
+/* Enhanced animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading states */
+.analyzing .result-card {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.analyzing .confidence-fill {
+    animation: pulse 1.5s infinite;
+}
+
 @keyframes slideInUp {
     from {
         opacity: 0;
