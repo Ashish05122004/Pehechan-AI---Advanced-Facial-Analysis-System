@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HUFMAN AI - Where faces speak and AI listens. Advanced facial analysis system built through DRDO PXE">
+    <meta name="keywords" content="facial analysis, AI, machine learning, age detection, emotion recognition, DRDO, PXE">
+    <meta name="author" content="HUFMAN AI - DRDO PXE">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Security headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+
+    <title>HUFMAN AI - Where faces speak and AI listens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background-gradient"></div>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <h1 class="title">HUFMAN AI</h1>
+                </div>
+                <p class="subtitle">Where faces speak and AI listens</p>
+                <p class="drdo-credit">Built through DRDO PXE</p>
+                <div class="header-stats">
+                    <div class="stat">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">Features</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">AI</span>
+                        <span class="stat-label">Powered</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel - Feature Selection -->
+            <div class="panel feature-panel">
+                <div class="panel-header">
+                    <i class="fas fa-sliders-h"></i>
+                    <h2>Feature Selection</h2>
+                </div>
+                <div class="feature-toggles">
+                    <div class="toggle-item">
+                        <div class="toggle-wrapper">
+                            <input type="checkbox" id="age-toggle" class="toggle-input" checked>
+                            <label for="age-toggle" class="toggle-label">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-content">
+                            <div class="toggle-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="toggle-text">
+                                <span class="toggle-title">Age Detection</span>
+                                <span class="toggle-desc">Predict age with ±2-3 years accuracy</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toggle-item">
+                        <div class="toggle-wrapper">
+                            <input type="checkbox" id="emotion-toggle" class="toggle-input" checked>
+                            <label for="emotion-toggle" class="toggle-label">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-content">
+                            <div class="toggle-icon">
+                                <i class="fas fa-smile"></i>
+                            </div>
+                            <div class="toggle-text">
+                                <span class="toggle-title">Emotion Recognition</span>
+                                <span class="toggle-desc">Detect 7 primary emotions</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toggle-item">
+                        <div class="toggle-wrapper">
+                            <input type="checkbox" id="gender-toggle" class="toggle-input" checked>
+                            <label for="gender-toggle" class="toggle-label">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-content">
+                            <div class="toggle-icon">
+                                <i class="fas fa-venus-mars"></i>
+                            </div>
+                            <div class="toggle-text">
+                                <span class="toggle-title">Gender Classification</span>
+                                <span class="toggle-desc">High precision gender detection</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toggle-item">
+                        <div class="toggle-wrapper">
+                            <input type="checkbox" id="race-toggle" class="toggle-input" checked>
+                            <label for="race-toggle" class="toggle-label">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-content">
+                            <div class="toggle-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="toggle-text">
+                                <span class="toggle-title">Ethnicity Detection</span>
+                                <span class="toggle-desc">Cultural heritage analysis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Camera Area -->
+            <div class="panel camera-panel">
+                <div class="panel-header">
+                    <i class="fas fa-video"></i>
+                    <h2>Live Camera Feed</h2>
+                    <div class="camera-status" id="camera-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Initializing...</span>
+                    </div>
+                </div>
+
+                <div class="camera-container">
+                    <div id="camera-placeholder" class="camera-placeholder">
+                        <div class="placeholder-content">
+                            <i class="fas fa-camera camera-icon"></i>
+                            <h3>Camera Ready</h3>
+                            <p>Position your face in the frame and click capture</p>
+                        </div>
+                    </div>
+                    <img id="camera-feed" class="camera-feed" style="display: none;" src="">
+
+                    <!-- Loading Overlay -->
+                    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+                        <div class="loading-content">
+                            <div class="loading-spinner">
+                                <div class="spinner-ring"></div>
+                                <div class="spinner-ring"></div>
+                                <div class="spinner-ring"></div>
+                            </div>
+                            <h3>Analyzing Face...</h3>
+                            <p id="loading-text">Processing image with AI</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Face Detection Overlay -->
+                    <div id="face-overlay" class="face-overlay" style="display: none;">
+                        <div class="face-box">
+                            <div class="corner corner-tl"></div>
+                            <div class="corner corner-tr"></div>
+                            <div class="corner corner-bl"></div>
+                            <div class="corner corner-br"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Capture Button -->
+                <div class="capture-section">
+                    <button id="capture-btn" class="capture-btn" disabled>
+                        <div class="btn-content">
+                            <i class="fas fa-camera"></i>
+                            <span class="btn-text">Capture & Analyze</span>
+                        </div>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <p class="capture-hint">Ensure good lighting and face the camera directly</p>
+                </div>
+            </div>
+
+            <!-- Right Panel - Analysis Results -->
+            <div class="panel results-panel">
+                <div class="panel-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Analysis Results</h2>
+                    <div class="results-status" id="results-status">
+                        <span class="status-text">Ready for analysis</span>
+                    </div>
+                </div>
+
+                <div class="results-container" id="results-container">
+                    <!-- Age Result -->
+                    <div class="result-card" id="age-result" style="display: none;">
+                        <div class="result-header">
+                            <div class="result-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="result-info">
+                                <span class="result-label">Age</span>
+                                <span class="result-value" id="age-value">--</span>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="age-confidence-bar"></div>
+                            </div>
+                            <span class="confidence-text" id="age-confidence">--</span>
+                        </div>
+                        <div class="result-extra" id="age-extra"></div>
+                    </div>
+
+                    <!-- Emotion Result -->
+                    <div class="result-card" id="emotion-result" style="display: none;">
+                        <div class="result-header">
+                            <div class="result-icon">
+                                <i class="fas fa-smile"></i>
+                            </div>
+                            <div class="result-info">
+                                <span class="result-label">Emotion</span>
+                                <span class="result-value" id="emotion-value">--</span>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="emotion-confidence-bar"></div>
+                            </div>
+                            <span class="confidence-text" id="emotion-confidence">--</span>
+                        </div>
+                        <div class="result-extra" id="emotion-extra"></div>
+                    </div>
+
+                    <!-- Gender Result -->
+                    <div class="result-card" id="gender-result" style="display: none;">
+                        <div class="result-header">
+                            <div class="result-icon">
+                                <i class="fas fa-venus-mars"></i>
+                            </div>
+                            <div class="result-info">
+                                <span class="result-label">Gender</span>
+                                <span class="result-value" id="gender-value">--</span>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="gender-confidence-bar"></div>
+                            </div>
+                            <span class="confidence-text" id="gender-confidence">--</span>
+                        </div>
+                        <div class="result-extra" id="gender-extra"></div>
+                    </div>
+
+                    <!-- Race Result -->
+                    <div class="result-card" id="race-result" style="display: none;">
+                        <div class="result-header">
+                            <div class="result-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="result-info">
+                                <span class="result-label">Ethnicity</span>
+                                <span class="result-value" id="race-value">--</span>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="race-confidence-bar"></div>
+                            </div>
+                            <span class="confidence-text" id="race-confidence">--</span>
+                        </div>
+                        <div class="result-extra" id="race-extra"></div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div class="empty-state" id="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>No Results Yet</h3>
+                        <p>Select features and capture your photo to see analysis results</p>
+                    </div>
+                </div>
+
+                <!-- Analysis Summary -->
+                <div class="analysis-summary" id="analysis-summary" style="display: none;">
+                    <div class="summary-header">
+                        <i class="fas fa-clock"></i>
+                        <span>Analysis completed in <span id="processing-time">--</span>s</span>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Detection Confidence</span>
+                            <span class="stat-value" id="detection-confidence">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Notification System -->
+        <div class="notification-container" id="notification-container"></div>
+
+        <!-- Loading Screen -->
+        <div class="loading-screen" id="loading-screen">
+            <div class="loading-content">
+                <div class="loading-logo">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h2>Initializing HUFMAN AI</h2>
+                <p>Setting up camera and AI models...</p>
+                <div class="loading-bar">
+                    <div class="loading-progress" id="init-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
