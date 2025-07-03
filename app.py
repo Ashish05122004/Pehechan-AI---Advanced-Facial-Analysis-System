@@ -1,20 +1,17 @@
 from flask import Flask, render_template, request, jsonify, Response
 import cv2
-import numpy as np
 import threading
 import time
 import logging
 import atexit
 from analysis import analyze_face_features_advanced
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Configuration
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 
 
 camera = None
 camera_active = False
@@ -22,17 +19,14 @@ camera_lock = threading.Lock()
 
 class AdvancedVideoCamera:
     def __init__(self):
-        """Initialize camera with multiple backend support and error handling"""
         self.video = None
         self.is_initialized = False
 
-        # Try different backends for better compatibility
         backends = [
             (cv2.CAP_DSHOW, "DirectShow"),
             (cv2.CAP_ANY, "Default"),
             (cv2.CAP_V4L2, "Video4Linux2")
         ]
-
         for backend, name in backends:
             try:
                 logger.info(f"Trying camera backend: {name}")
@@ -48,38 +42,27 @@ class AdvancedVideoCamera:
         if self.video is None or not self.video.isOpened():
             raise Exception("Could not open camera with any available backend")
 
-        # Configure camera settings
         self._configure_camera()
-
-        # Test camera functionality
         self._test_camera()
-
         self.is_initialized = True
         logger.info("Camera initialized successfully")
 
     def _configure_camera(self):
-        """Configure camera settings for optimal performance"""
         try:
-            # Set resolution
             self.video.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
             self.video.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-            # Set frame rate
             self.video.set(cv2.CAP_PROP_FPS, 30)
 
-            # Reduce buffer size for lower latency
             self.video.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
-            # Auto exposure and focus (if supported)
             self.video.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-
             logger.info("Camera settings configured")
         except Exception as e:
             logger.warning(f"Some camera settings could not be applied: {e}")
 
     def _test_camera(self):
-        """Test camera by reading a frame"""
-        time.sleep(1)  # Allow camera to warm up
+        time.sleep(1) 
 
         for attempt in range(3):
             ret, frame = self.video.read()
@@ -135,7 +118,6 @@ def generate_frames():
 
 @app.route('/')
 def index():
-    """Main page route"""
     return render_template('index.html')
 
 @app.route('/camera_feed')
@@ -162,11 +144,9 @@ def initialize_camera():
 
 @app.route('/capture_and_analyze', methods=['POST'])
 def capture_and_analyze():
-    """Enhanced capture and analyze endpoint with better error handling"""
     global camera
 
     try:
-        # Validate request
         if not request.is_json:
             return jsonify({
                 'success': False,
@@ -187,7 +167,6 @@ def capture_and_analyze():
                 'error': 'Please select at least one feature to analyze'
             })
 
-        # Validate features
         valid_features = ['age', 'gender', 'emotion', 'race']
         invalid_features = [f for f in selected_features if f not in valid_features]
         if invalid_features:
@@ -198,7 +177,6 @@ def capture_and_analyze():
 
         logger.info(f"Starting analysis for features: {selected_features}")
 
-        # Capture frame with error handling
         with camera_lock:
             if camera is None or not camera.is_initialized:
                 return jsonify({
@@ -220,7 +198,6 @@ def capture_and_analyze():
                     'error': 'Camera capture failed. Please try again.'
                 })
 
-        # Analyze frame
         logger.info("Starting facial analysis...")
         results = analyze_face_features_advanced(frame, selected_features)
 
